@@ -29,6 +29,11 @@ export class GarmentPhysics {
     this.state = 'HANGING';
     this.dropVelocityY = 0;
 
+    // 0 = hanging upright, 1 = folded flat on the shelf
+    this.lie = 0;
+    this.landY = this.shelfY + 0.82; // hook height when the hem first touches the shelf
+    this.restY = this.shelfY + 0.08; // hook height once lying folded
+
     // Bone dynamic states for bones 1 through 7
     // [1: Chest, 2: Torso, 3: HemCenter, 4: SleeveL, 5: SleeveR, 6: HemL, 7: HemR]
     this.bonesState = [
@@ -115,16 +120,11 @@ export class GarmentPhysics {
       this.bonesState[6].velX -= airDrag * clampedDt * 2.0;
       this.bonesState[7].velX -= airDrag * clampedDt * 2.0;
 
-      // Bottom shelf collision check
-      if (this.position.y <= this.shelfY) {
-        this.position.y = this.shelfY;
-        // Bounce restitution
-        if (Math.abs(this.dropVelocityY) > 0.8) {
-          this.dropVelocityY = -this.dropVelocityY * 0.22;
-        } else {
-          this.dropVelocityY = 0;
-          this.state = 'FALLEN';
-        }
+      // Hem reaches the shelf: start folding down onto it
+      if (this.position.y <= this.landY) {
+        this.position.y = this.landY;
+        this.dropVelocityY = 0;
+        this.state = 'FALLEN';
 
         // Impact crumple: Hem bones spread outwards upon hitting tray
         this.bonesState[6].velZ -= 3.5;
@@ -133,9 +133,13 @@ export class GarmentPhysics {
         this.bonesState[1].velX += 1.8;
       }
     } else if (this.state === 'FALLEN') {
-      this.position.y = this.shelfY;
+      this.lie += (1 - this.lie) * Math.min(clampedDt * 4.0, 1.0);
+      this.position.y = THREE.MathUtils.lerp(this.landY, this.restY, this.lie);
+      this.position.z = -0.24 * this.lie;
       this.dropVelocityY = 0;
     } else if (this.state === 'LIFTING') {
+      this.lie += (0 - this.lie) * Math.min(clampedDt * 8.0, 1.0);
+      this.position.z = -0.24 * this.lie;
       // Smoothly elevate back to the rail
       const dy = this.railY - this.position.y;
       this.position.y += dy * Math.min(clampedDt * 6.0, 1.0);
@@ -145,6 +149,8 @@ export class GarmentPhysics {
 
       if (Math.abs(dy) < 0.01) {
         this.position.y = this.railY;
+        this.position.z = 0;
+        this.lie = 0;
         this.state = 'HANGING';
         // Gentle settle bounce
         this.applyImpulse(0.5, 0.2);
@@ -157,6 +163,8 @@ export class GarmentPhysics {
     // Apply root transform to garment container
     garmentRoot.position.copy(this.position);
     garmentRoot.rotation.y = this.rotationY;
+    // Tip back to lie flat (front up) on the shelf
+    garmentRoot.rotation.x = -Math.PI / 2 * this.lie;
 
     // 3. Bone Spring Simulation (Hooke's Law + Damping + Inertia)
     // Inertial sway pushes bones based on rack acceleration & orientation
@@ -195,7 +203,8 @@ export class GarmentPhysics {
 
       // Apply rotations to bone
       bone.rotation.z = state.angleZ;
-      bone.rotation.x = state.angleX;
+      // Torso bone folds the lower half back over the front when lying down
+      bone.rotation.x = state.angleX + (i === 2 ? -2.8 * this.lie : 0);
     }
   }
 }

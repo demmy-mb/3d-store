@@ -3,6 +3,7 @@
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background-color: #0c0d10;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -71,11 +72,6 @@
   height: 7px;
   border-radius: 50%;
   background-color: #121316;
-  transition: background-color 0.4s ease;
-}
-
-.hover-rudeboys .brand-dot {
-  background-color: #ffffff;
 }
 
 .portal-name {
@@ -84,18 +80,13 @@
   letter-spacing: 2.5px;
   font-size: 13px;
   color: #121316;
-  transition: color 0.4s ease;
-}
-
-.hover-rudeboys .portal-name {
-  color: #ffffff;
 }
 
 .portal-season {
-  font-size: 10.5px;
+  font-size: 12px;
   letter-spacing: 2px;
   font-weight: 600;
-  color: #8c8f96;
+  color: #a3a6ae;
 }
 
 /* Split Screen Layout */
@@ -116,14 +107,14 @@
   justify-content: center;
   padding: 60px 84px;
   cursor: pointer;
-  transition: flex 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: flex 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
 }
 
-.hover-atelier .side-atelier { flex: 1.25; }
-.hover-atelier .side-rudeboys { flex: 0.75; opacity: 0.6; }
+.hover-atelier .side-atelier { flex: 1.5; }
+.hover-atelier .side-rudeboys { flex: 1; opacity: 0.6; }
 
-.hover-rudeboys .side-rudeboys { flex: 1.25; }
-.hover-rudeboys .side-atelier { flex: 0.75; opacity: 0.6; }
+.hover-rudeboys .side-rudeboys { flex: 1.5; }
+.hover-rudeboys .side-atelier { flex: 1; opacity: 0.6; }
 
 /* Content Blocks */
 .side-content {
@@ -147,10 +138,10 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 1.8px;
-  color: #7b7e87;
+  letter-spacing: 1.6px;
+  color: #5f626b;
   text-transform: uppercase;
 }
 
@@ -164,16 +155,16 @@
 }
 
 .side-tagline {
-  font-size: 13.5px;
+  font-size: 15px;
   font-weight: 600;
-  color: #4b4e57;
+  color: #3b3e46;
   letter-spacing: 0.2px;
 }
 
 .side-description {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.65;
-  color: #636773;
+  color: #50535c;
 }
 
 .experience-pills {
@@ -184,10 +175,10 @@
 }
 
 .pill {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.5px;
-  padding: 5px 12px;
+  letter-spacing: 0.3px;
+  padding: 6px 12px;
   border-radius: 14px;
   background: rgba(0, 0, 0, 0.05);
   color: #3b3d45;
@@ -211,7 +202,7 @@
 }
 
 .rudeboys-desc {
-  color: #9398a6;
+  color: #a6abb8;
 }
 
 .rudeboys-pill {
@@ -226,9 +217,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  min-height: 44px;
   padding: 12px 26px;
   border-radius: 26px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.2px;
   cursor: pointer;
@@ -287,20 +279,35 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 10px;
-  letter-spacing: 1.8px;
-  color: #8c8f96;
+  font-size: 12px;
+  letter-spacing: 1.6px;
+  color: #6b6e76;
   font-weight: 600;
   z-index: 10;
   pointer-events: none;
 }
 
-/* Responsiveness */
+/* Responsiveness: stacked halves that both fit one phone screen */
 @media (max-width: 900px) {
   .split-wrapper { flex-direction: column; }
-  .backdrop-atelier, .backdrop-rudeboys { width: 100%; height: 50%; }
-  .split-side { padding: 48px 28px; }
+  .split-side,
+  .hover-atelier .split-side,
+  .hover-rudeboys .split-side { flex: 1; opacity: 1; }
+  .side-atelier { padding: 76px 24px 28px; }
+  .side-rudeboys { padding: 28px 24px 40px; }
+  .side-content { width: 100%; gap: 10px; }
+  .split-side:hover .side-content { transform: none; }
+  .backdrop-atelier,
+  .hover-atelier .backdrop-atelier,
+  .hover-rudeboys .backdrop-atelier { top: 0; width: 100%; height: 50%; }
+  .backdrop-rudeboys,
+  .hover-atelier .backdrop-rudeboys,
+  .hover-rudeboys .backdrop-rudeboys { top: auto; bottom: 0; width: 100%; height: 50%; }
   .split-divider { display: none; }
-  .side-title { font-size: 32px; }
-  .landing-top-bar, .landing-footer { padding: 20px 28px; }
+  .side-title { font-size: 34px; }
+  .side-description,
+  .experience-pills,
+  .landing-footer,
+  .portal-season { display: none; }
+  .landing-top-bar { padding: 22px 24px; }
 }

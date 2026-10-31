@@ -1,38 +1,9 @@
-/* Root Variables */
-:root {
-  --bg-studio: #fcfbfa;
-  --text-primary: #121316;
-  --text-secondary: #585a62;
-  --text-muted: #8e9198;
-  --border-light: rgba(0, 0, 0, 0.07);
-  --glass-bg: rgba(255, 255, 255, 0.88);
-  --glass-border: rgba(255, 255, 255, 0.7);
-  --shadow-dock: 0 10px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
-  --accent-gold: #bfa15f;
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: 'Syne', sans-serif;
-  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  user-select: none;
-}
-
-body {
-  font-family: var(--font-sans);
-  background-color: var(--bg-studio);
-  color: var(--text-primary);
-  overflow: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
+/* Atelier Éthos showroom (shared tokens and header live in index.css) */
 .store-container {
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -51,188 +22,13 @@ body {
   cursor: grabbing;
 }
 
-/* Minimal Top Header */
-.brand-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 24px 36px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.brand-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  pointer-events: auto;
-}
-
-.brand-text-block {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.back-portal-btn {
-  background: var(--glass-bg);
-  backdrop-filter: blur(14px);
-  border: 1px solid var(--border-light);
-  padding: 6px 12px;
-  border-radius: 18px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: var(--text-primary);
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.back-portal-btn:hover {
-  background: #121316;
-  color: #fff;
-  border-color: #121316;
-}
-
-.brand-title {
-  font-family: var(--font-display);
-  font-size: 19px;
-  font-weight: 800;
-  letter-spacing: 3px;
-  color: var(--text-primary);
-}
-
-.brand-sub {
-  font-size: 9.5px;
-  letter-spacing: 1.5px;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-
-.header-nav {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  pointer-events: auto;
-}
-
-.nav-action-btn {
-  background: #121316;
-  color: #fff;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 16px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.15s ease, background 0.2s ease;
-}
-
-.nav-action-btn:hover {
-  background: #2a2c32;
-  transform: translateY(-1px);
-}
-
-/* Nav Arrows */
-.carousel-nav-arrows {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 24px;
-  transform: translateY(-50%);
-  pointer-events: none;
-  z-index: 10;
-}
-
-.arrow-btn {
-  pointer-events: auto;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--glass-bg);
-  backdrop-filter: blur(14px);
-  border: 1px solid var(--border-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-primary);
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-}
-
-.arrow-btn:hover {
-  background: #121316;
-  color: #fff;
-  transform: scale(1.08);
-}
-
-/* Quick 3D Viewport Zoom Controls (+ / -) */
-.viewport-zoom-controls {
-  position: absolute;
-  right: 28px;
-  bottom: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border-light);
-  border-radius: 20px;
-  padding: 4px;
-  box-shadow: var(--shadow-dock);
-  z-index: 15;
-}
-
-.zoom-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: none;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-primary);
-  transition: all 0.15s ease;
-}
-
-.zoom-btn:hover {
-  background: #121316;
-  color: #fff;
-}
-
-.zoom-divider {
-  width: 16px;
-  height: 1px;
-  background: var(--border-light);
-  margin: 1px 0;
-}
-
-/* Side Fabric Inspection Panel (Zooms in beside the shirt) */
+/* Fabric close-up panel (beside the shirt when zoomed in) */
 .fabric-side-panel {
   position: absolute;
-  right: 48px;
+  right: 88px;
   top: 50%;
   transform: translateY(-50%);
-  width: 290px;
+  width: 300px;
   background: var(--glass-bg);
   backdrop-filter: blur(22px);
   border: 1px solid var(--border-light);
@@ -266,14 +62,18 @@ body {
 .header-badge {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 8.5px;
+  gap: 6px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1px;
   color: var(--text-muted);
 }
 
 .panel-close-btn {
+  width: 40px;
+  height: 40px;
+  margin-right: -10px;
+  border-radius: 50%;
   background: none;
   border: none;
   cursor: pointer;
@@ -281,11 +81,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.15s ease;
+  transition: color 0.15s ease, background 0.15s ease;
 }
 
 .panel-close-btn:hover {
   color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .side-panel-body {
@@ -295,62 +96,62 @@ body {
 }
 
 .side-garment-name {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: -6px;
 }
 
 .side-garment-fit {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 
 .fabric-spec-group {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
 .spec-heading {
-  font-size: 8.5px;
-  letter-spacing: 0.8px;
+  font-size: 12px;
+  letter-spacing: 1px;
   font-weight: 700;
   color: var(--text-muted);
 }
 
 .spec-desc {
-  font-size: 11px;
+  font-size: 14px;
   color: var(--text-secondary);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .fabric-micro-features {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 6px;
   margin-top: 4px;
 }
 
 .feature-pill {
-  font-size: 9.5px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--text-secondary);
-  background: rgba(0, 0, 0, 0.04);
-  padding: 3px 8px;
-  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 4px 10px;
+  border-radius: 8px;
 }
 
 .exit-zoom-btn {
   margin-top: 6px;
   width: 100%;
-  background: #121316;
+  min-height: var(--tap);
+  background: var(--text-primary);
   color: #fff;
   border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 10px;
-  font-weight: 600;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
   letter-spacing: 0.8px;
   cursor: pointer;
   transition: background 0.15s ease;
@@ -360,232 +161,226 @@ body {
   background: #2b2d34;
 }
 
-/* Interactive Hover-To-Reveal Bottom Dock */
-.hover-dock-trigger {
+/* Product dock: always visible, tap-friendly */
+.showroom-dock {
   position: absolute;
-  bottom: 12px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 20;
-  padding: 6px; /* invisible trigger margin */
-}
-
-/* Base pill container */
-.dock-pill {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 8px 8px 20px;
+  max-width: calc(100vw - 32px);
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border-light);
+  border-radius: 32px;
   box-shadow: var(--shadow-dock);
-  transition: all 0.28s var(--ease-spring);
-  display: flex;
-  align-items: center;
 }
 
-/* State 1: Minimal 3-Color Dot Pill (Rest state) */
-.minimal-pill {
-  padding: 7px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-.three-dots-row {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.color-preview-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  transition: transform 0.2s ease;
-}
-
-.color-preview-dot.active {
-  transform: scale(1.3);
-  box-shadow: 0 0 0 1.5px #121316;
-}
-
-/* State 2: Swatches Pill (Hovered) */
-.swatches-pill {
-  padding: 5px 12px;
-  border-radius: 20px;
-}
-
-.full-swatches-strip {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-/* State 3: Full Pop-Out Dock (Stayed on longer) */
-.expanded-dock {
-  border-radius: 12px;
-  padding: 4px 10px;
-  gap: 12px;
-  animation: popOut 0.25s var(--ease-spring);
-}
-
-@keyframes popOut {
-  from {
-    opacity: 0.6;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Left Section */
-.dock-identity-section {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.identity-text {
+.dock-identity {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 2px;
+  min-width: 0;
 }
 
 .dock-title-line {
   display: flex;
-  align-items: center;
-  gap: 4px;
+  align-items: baseline;
+  gap: 6px;
 }
 
 .dock-num-tag {
-  font-size: 8.5px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.5px;
   color: var(--text-muted);
-  opacity: 0.8;
 }
 
 .dock-garment-title {
-  font-family: var(--font-sans);
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
   color: var(--text-primary);
 }
 
 .dock-meta-row {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  min-width: 0;
 }
 
 .dock-garment-price {
-  font-size: 10.5px;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .meta-divider {
   color: var(--text-muted);
-  font-size: 9px;
-  opacity: 0.4;
 }
 
 .dock-garment-fit {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--text-muted);
   white-space: nowrap;
-}
-
-/* Center Section */
-.dock-palette-section {
-  display: flex;
-  align-items: center;
-  padding: 0 4px;
-  border-left: 1px solid var(--border-light);
-  border-right: 1px solid var(--border-light);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 190px;
 }
 
 .dock-swatches {
   display: flex;
   align-items: center;
-  gap: 6px;
+  padding: 0 8px;
+  border-left: 1px solid var(--border-light);
+  border-right: 1px solid var(--border-light);
 }
 
+/* 36px hit area around a 20px colour chip */
 .dock-swatch-btn {
-  width: 15px;
-  height: 15px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
   border-radius: 50%;
-  border: 1.5px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-  transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
-.dock-swatch-btn:hover {
-  transform: scale(1.22);
+.swatch-chip {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.dock-swatch-btn.active {
-  border-color: #121316;
-  transform: scale(1.25);
+.dock-swatch-btn:hover .swatch-chip {
+  transform: scale(1.12);
 }
 
-/* Right Section */
-.dock-action-section {
+.dock-swatch-btn.active .swatch-chip {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--text-primary);
+}
+
+.dock-actions {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
 .dock-action-btn {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
-  gap: 3px;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 9.5px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  cursor: pointer;
-  border: 1px solid var(--border-light);
-  background: #ffffff;
-  color: var(--text-primary);
-  transition: all 0.15s ease;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-primary);
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .dock-action-btn:hover {
-  background: #f2f1ec;
-  border-color: #dcd8cf;
+  background: rgba(0, 0, 0, 0.05);
 }
 
-.dock-action-btn.active-zoom {
-  background: #121316;
+.dock-action-btn.active {
+  background: var(--text-primary);
   color: #fff;
-  border-color: #121316;
 }
 
-.dock-action-btn.primary {
-  background: #121316;
-  color: #fff;
-  border-color: #121316;
-  padding: 4px 9px;
+.dock-buy {
+  flex-shrink: 0;
 }
 
-.dock-action-btn.primary:hover {
-  background: #2a2c32;
+.dock-more-btn {
+  display: none;
+  width: var(--tap);
+  height: var(--tap);
+  border-radius: 50%;
+  border: 1px solid var(--border-light);
+  background: #fff;
+  color: var(--text-primary);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
-.dock-action-btn.primary.fallen {
-  background: #873628;
-  border-color: #873628;
+/* Medium screens: icon-only view controls */
+@media (max-width: 1180px) {
+  .dock-action-btn span { display: none; }
+  .dock-action-btn { width: 40px; padding: 0; justify-content: center; }
+  .dock-garment-fit { display: none; }
+  .dock-meta-row .meta-divider { display: none; }
 }
 
-/* Responsiveness */
-@media (max-width: 900px) {
-  .fabric-side-panel {
-    right: 20px;
-    width: 260px;
+/* Phones: two-row dock, view controls behind a toggle */
+@media (max-width: 720px) {
+  .showroom-dock {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    transform: none;
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      'identity buy more'
+      'swatches swatches swatches'
+      'actions actions actions';
+    gap: 10px 8px;
+    padding: 12px;
+    border-radius: 24px;
   }
+  .dock-identity { grid-area: identity; }
+  .dock-garment-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dock-title-line { min-width: 0; }
+  .dock-buy { padding: 0 16px; }
+  .dock-buy { grid-area: buy; }
+  .dock-swatches {
+    grid-area: swatches;
+    border: none;
+    padding: 0;
+    justify-content: space-between;
+  }
+  .dock-more-btn { grid-area: more; display: flex; }
+  .dock-actions {
+    grid-area: actions;
+    display: none;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-light);
+  }
+  .actions-open .dock-actions { display: flex; }
+  .dock-action-btn { width: var(--tap); height: var(--tap); }
+
+  .xp-zoom-controls { display: none; }
+  .xp-nav-arrows { top: 42%; }
+
+  .fabric-side-panel {
+    top: 72px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    transform: none;
+    padding: 16px;
+    animation: none;
+  }
+  .fabric-micro-features { display: none; }
 }

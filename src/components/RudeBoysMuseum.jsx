@@ -3,20 +3,12 @@ import {
   RudeBoysMuseumExperience,
   RUDE_BOYS_ARTWORKS,
 } from '../three/museumScene';
-import {
-  ArrowLeft,
-  ChevronLeft,
-  ChevronRight,
-  Plus,
-  Minus,
-  Sparkles,
-  Compass,
-  X,
-  Layers,
-} from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Minus, X, ShoppingBag } from 'lucide-react';
+import ExperienceHeader from './ExperienceHeader';
+import useKeyboardNav from '../hooks/useKeyboardNav';
 import './RudeBoysMuseum.css';
 
-export default function RudeBoysMuseum({ onReturnToPortal }) {
+export default function RudeBoysMuseum({ onReturnToPortal, bagCount, onAddToBag }) {
   const containerRef = useRef(null);
   const experienceRef = useRef(null);
 
@@ -43,6 +35,13 @@ export default function RudeBoysMuseum({ onReturnToPortal }) {
       exp.destroy();
     };
   }, []);
+
+  // Keep the active title visible in the scrollable strip on narrow screens
+  const stripRef = useRef(null);
+  useEffect(() => {
+    const active = stripRef.current?.querySelector('.artwork-pill-btn.active');
+    active?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+  }, [selectedIndex, selectedArtwork]);
 
   const handleFocusArtwork = (index) => {
     setSelectedIndex(index);
@@ -80,57 +79,55 @@ export default function RudeBoysMuseum({ onReturnToPortal }) {
     }
   };
 
+  useKeyboardNav({
+    onPrev: handlePrev,
+    onNext: handleNext,
+    onEscape: () => {
+      if (selectedArtwork) handleExitFocus();
+    },
+  });
+
   return (
     <div className="museum-container">
       {/* 3D WebGL Canvas */}
       <div className="museum-canvas-wrapper" ref={containerRef} />
 
-      {/* Top Header */}
-      <header className="museum-header">
-        <div className="museum-header-left">
-          <button className="back-portal-btn" onClick={onReturnToPortal}>
-            <ArrowLeft size={14} />
-            <span>RETURN TO PORTAL</span>
-          </button>
-          <div className="museum-title-block">
-            <h1 className="museum-title">RUDE BOYS</h1>
-            <span className="museum-subtitle">3D GRAFFITI ART MUSEUM</span>
-          </div>
-        </div>
+      <ExperienceHeader
+        title="RUDE BOYS"
+        subtitle="STREET ART ROTUNDA"
+        badge="HALL 04 · EAST WING"
+        bagCount={bagCount}
+        onBack={onReturnToPortal}
+      />
 
-        <div className="museum-header-right">
-          <span className="museum-hall-badge">GALLERY HALL № 04 · EAST WING</span>
-        </div>
-      </header>
-
-      {/* Floating Left/Right Artwork Navigation Arrows */}
-      <div className="museum-nav-arrows">
-        <button className="arrow-btn" onClick={handlePrev} title="Previous artwork">
-          <ChevronLeft size={18} />
+      {/* Previous / next artwork */}
+      <div className="xp-nav-arrows">
+        <button className="arrow-btn" onClick={handlePrev} aria-label="Previous artwork" title="Previous artwork (← key)">
+          <ChevronLeft size={20} />
         </button>
-        <button className="arrow-btn" onClick={handleNext} title="Next artwork">
-          <ChevronRight size={18} />
+        <button className="arrow-btn" onClick={handleNext} aria-label="Next artwork" title="Next artwork (→ key)">
+          <ChevronRight size={20} />
         </button>
       </div>
 
-      {/* Floating 3D Viewport Zoom Controls (+ / -) */}
-      <div className="museum-zoom-controls">
-        <button className="zoom-btn" onClick={handleZoomIn} title="Zoom in to paint details">
-          <Plus size={14} />
+      {/* Zoom controls */}
+      <div className="xp-zoom-controls">
+        <button className="zoom-btn" onClick={handleZoomIn} aria-label="Zoom in" title="Zoom in">
+          <Plus size={16} />
         </button>
         <div className="zoom-divider" />
-        <button className="zoom-btn" onClick={handleZoomOut} title="Zoom out to gallery">
-          <Minus size={14} />
+        <button className="zoom-btn" onClick={handleZoomOut} aria-label="Zoom out" title="Zoom out">
+          <Minus size={16} />
         </button>
       </div>
 
-      {/* Artwork Inspection Detail Panel: Appears on the LEFT side of the screen! */}
+      {/* Artwork details: left panel on desktop, bottom sheet on phones */}
       {selectedArtwork && (
         <aside className="artwork-left-panel">
           <div className="panel-header">
             <span className="panel-tag">{selectedArtwork.subtitle}</span>
-            <button className="panel-close-btn" onClick={handleExitFocus} title="Exit artwork view">
-              <X size={16} />
+            <button className="panel-close-btn" onClick={handleExitFocus} aria-label="Close artwork details">
+              <X size={18} />
             </button>
           </div>
 
@@ -160,8 +157,15 @@ export default function RudeBoysMuseum({ onReturnToPortal }) {
               </div>
 
               <div className="panel-button-row">
+                <button
+                  className="buy-btn panel-buy"
+                  onClick={() => onAddToBag({ name: selectedArtwork.title, price: selectedArtwork.price })}
+                >
+                  <ShoppingBag size={15} />
+                  <span>ADD TO BAG</span>
+                </button>
                 <button className="exit-focus-btn" onClick={handleExitFocus}>
-                  <span>← FULL GALLERY VIEW</span>
+                  ← BACK TO GALLERY
                 </button>
               </div>
             </div>
@@ -171,12 +175,13 @@ export default function RudeBoysMuseum({ onReturnToPortal }) {
 
       {/* Bottom Artworks Carousel Strip */}
       <footer className="museum-footer">
-        <div className="artwork-strip">
+        <div className="artwork-strip" ref={stripRef}>
           {RUDE_BOYS_ARTWORKS.map((art, idx) => (
             <button
               key={art.id}
               className={`artwork-pill-btn ${idx === selectedIndex && selectedArtwork ? 'active' : ''}`}
               onClick={() => handleFocusArtwork(idx)}
+              aria-pressed={idx === selectedIndex && !!selectedArtwork}
             >
               <span className="art-dot" style={{ backgroundColor: art.colorTheme }} />
               <span className="art-name">{art.title}</span>
