@@ -16,21 +16,23 @@ import {
   Eye,
   Plus,
   Minus,
-  ArrowLeft,
+  MoreHorizontal,
+  ShoppingBag,
 } from 'lucide-react';
+import ExperienceHeader from './ExperienceHeader';
+import useKeyboardNav from '../hooks/useKeyboardNav';
 import '../App.css';
 
-export default function AtelierShowroom({ onReturnToPortal }) {
+export default function AtelierShowroom({ onReturnToPortal, bagCount, onAddToBag }) {
   const containerRef = useRef(null);
   const experienceRef = useRef(null);
-  const hoverTimerRef = useRef(null);
 
   const [selectedGarment, setSelectedGarment] = useState(GARMENT_DATA[0]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [garmentState, setGarmentState] = useState('HANGING');
 
-  // Dock display states: 'MINIMAL' (3 dots) | 'SWATCHES' (all colors pill) | 'EXPANDED' (full dock)
-  const [dockState, setDockState] = useState('MINIMAL');
+  // View controls row is collapsible on phones
+  const [actionsOpen, setActionsOpen] = useState(false);
 
   // Macro Fabric Zoom Mode
   const [fabricInspectMode, setFabricInspectMode] = useState(false);
@@ -61,7 +63,6 @@ export default function AtelierShowroom({ onReturnToPortal }) {
 
     return () => {
       clearInterval(interval);
-      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
       exp.destroy();
     };
   }, []);
@@ -127,96 +128,68 @@ export default function AtelierShowroom({ onReturnToPortal }) {
     }
   };
 
-  const handleDockMouseEnter = () => {
-    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
-    setDockState('SWATCHES');
-    hoverTimerRef.current = setTimeout(() => {
-      setDockState('EXPANDED');
-    }, 300);
+  const handleAddToBag = () => {
+    onAddToBag({ name: `${selectedGarment.name} Tee`, price: selectedGarment.price });
   };
 
-  const handleDockMouseLeave = () => {
-    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
-    setDockState('MINIMAL');
-  };
+  useKeyboardNav({
+    onPrev: handlePrev,
+    onNext: handleNext,
+    onEscape: () => {
+      if (fabricInspectMode) handleToggleFabricInspect();
+      else setActionsOpen(false);
+    },
+  });
 
-  const handleSwatchClick = (idx, e) => {
-    e.stopPropagation();
-    handleSelect(idx);
-    setDockState('EXPANDED');
-  };
-
-  const previewIndices = [
-    (selectedIndex - 1 + GARMENT_DATA.length) % GARMENT_DATA.length,
-    selectedIndex,
-    (selectedIndex + 1) % GARMENT_DATA.length,
-  ];
+  const swatchColor = (item) => `#${item.color.toString(16).padStart(6, '0')}`;
 
   return (
     <div className="store-container">
       {/* 3D WebGL Canvas Viewport */}
       <div className="canvas-wrapper" ref={containerRef} />
 
-      {/* Top Brand Header */}
-      <header className="brand-header">
-        <div className="brand-left">
-          <button className="back-portal-btn" onClick={onReturnToPortal}>
-            <ArrowLeft size={13} />
-            <span>PORTAL</span>
-          </button>
-          <div className="brand-text-block">
-            <h1 className="brand-title">ATELIER ÉTHOS</h1>
-            <span className="brand-sub">3D CLOTHING RACK SHOWROOM</span>
-          </div>
-        </div>
+      <ExperienceHeader
+        title="ATELIER ÉTHOS"
+        subtitle="AW26 HEAVYWEIGHT TEES"
+        bagCount={bagCount}
+        onBack={onReturnToPortal}
+      />
 
-        <nav className="header-nav">
-          <button
-            className="nav-action-btn"
-            onClick={handleNudge}
-            title="Simulate wind to test cloth sway"
-          >
-            <Wind size={13} />
-            <span>SWISH BREEZE</span>
-          </button>
-        </nav>
-      </header>
-
-      {/* Floating Left/Right Arrows for Quick Switching */}
-      <div className="carousel-nav-arrows">
-        <button className="arrow-btn" onClick={handlePrev} title="Previous garment (Left)">
-          <ChevronLeft size={18} />
+      {/* Previous / next garment */}
+      <div className="xp-nav-arrows">
+        <button className="arrow-btn" onClick={handlePrev} aria-label="Previous garment" title="Previous garment (← key)">
+          <ChevronLeft size={20} />
         </button>
-        <button className="arrow-btn" onClick={handleNext} title="Next garment (Right)">
-          <ChevronRight size={18} />
+        <button className="arrow-btn" onClick={handleNext} aria-label="Next garment" title="Next garment (→ key)">
+          <ChevronRight size={20} />
         </button>
       </div>
 
-      {/* Floating Quick Zoom Controls (+ / -) */}
-      <div className="viewport-zoom-controls">
-        <button className="zoom-btn" onClick={handleZoomIn} title="Zoom in to fabric">
-          <Plus size={14} />
+      {/* Zoom controls */}
+      <div className="xp-zoom-controls">
+        <button className="zoom-btn" onClick={handleZoomIn} aria-label="Zoom in" title="Zoom in">
+          <Plus size={16} />
         </button>
         <div className="zoom-divider" />
-        <button className="zoom-btn" onClick={handleZoomOut} title="Zoom out to full room">
-          <Minus size={14} />
+        <button className="zoom-btn" onClick={handleZoomOut} aria-label="Zoom out" title="Zoom out">
+          <Minus size={16} />
         </button>
       </div>
 
-      {/* Floating Side Fabric Detail Card (Appears beside the shirt when zoomed in) */}
+      {/* Fabric close-up details */}
       {fabricInspectMode && (
         <aside className="fabric-side-panel">
           <div className="side-panel-header">
             <div className="header-badge">
-              <Eye size={12} />
-              <span>MACRO WEAVE INSPECTION</span>
+              <Eye size={14} />
+              <span>FABRIC CLOSE-UP</span>
             </div>
             <button
               className="panel-close-btn"
               onClick={handleToggleFabricInspect}
-              title="Exit zoom view"
+              aria-label="Close fabric close-up"
             >
-              <X size={15} />
+              <X size={18} />
             </button>
           </div>
 
@@ -225,165 +198,102 @@ export default function AtelierShowroom({ onReturnToPortal }) {
             <span className="side-garment-fit">{selectedGarment.fit}</span>
 
             <div className="fabric-spec-group">
-              <span className="spec-heading">MATERIAL COMPOSITION</span>
+              <span className="spec-heading">MATERIAL</span>
               <p className="spec-desc">{selectedGarment.fabric}</p>
             </div>
 
             <div className="fabric-spec-group">
-              <span className="spec-heading">TACTILE WEAVE & FINISH</span>
+              <span className="spec-heading">WEAVE & FINISH</span>
               <p className="spec-desc">{selectedGarment.finish}</p>
             </div>
 
             <div className="fabric-micro-features">
-              <div className="feature-pill">280+ GSM Heavy Cotton</div>
-              <div className="feature-pill">Ribbed Crewneck Collar</div>
-              <div className="feature-pill">Enzyme Peach Skin Wash</div>
-              <div className="feature-pill">Pre-Shrunk Compact Yarn</div>
+              <div className="feature-pill">280+ GSM cotton</div>
+              <div className="feature-pill">Ribbed crew collar</div>
+              <div className="feature-pill">Enzyme wash</div>
+              <div className="feature-pill">Pre-shrunk</div>
             </div>
 
             <button className="exit-zoom-btn" onClick={handleToggleFabricInspect}>
-              <span>← EXIT CLOSE-UP VIEW</span>
+              ← BACK TO RAIL
             </button>
           </div>
         </aside>
       )}
 
-      {/* Interactive Hover-To-Reveal Bottom Dock */}
-      <div
-        className={`hover-dock-trigger ${dockState}`}
-        onMouseEnter={handleDockMouseEnter}
-        onMouseLeave={handleDockMouseLeave}
-      >
-        {/* State 1: Minimal 3-Color Dot Pill (Default Rest State) */}
-        {dockState === 'MINIMAL' && (
-          <div className="dock-pill minimal-pill">
-            <div className="three-dots-row">
-              {previewIndices.map((idx, pos) => (
-                <span
-                  key={pos}
-                  className={`color-preview-dot ${idx === selectedIndex ? 'active' : ''}`}
-                  style={{
-                    backgroundColor: `#${GARMENT_DATA[idx].color.toString(16).padStart(6, '0')}`,
-                  }}
-                />
-              ))}
-            </div>
+      {/* Product dock: always visible, works with tap or mouse */}
+      <div className={`showroom-dock ${actionsOpen ? 'actions-open' : ''}`}>
+        <div className="dock-identity">
+          <div className="dock-title-line">
+            <span className="dock-num-tag">{selectedGarment.num}</span>
+            <span className="dock-garment-title">{selectedGarment.name}</span>
           </div>
-        )}
-
-        {/* State 2: Swatches Pill (Hovered) */}
-        {dockState === 'SWATCHES' && (
-          <div className="dock-pill swatches-pill">
-            <div className="full-swatches-strip">
-              {GARMENT_DATA.map((item, idx) => (
-                <button
-                  key={item.id}
-                  className={`dock-swatch-btn ${idx === selectedIndex ? 'active' : ''}`}
-                  style={{ backgroundColor: `#${item.color.toString(16).padStart(6, '0')}` }}
-                  onClick={(e) => handleSwatchClick(idx, e)}
-                  title={item.name}
-                />
-              ))}
-            </div>
+          <div className="dock-meta-row">
+            <span className="dock-garment-price">{selectedGarment.price}</span>
+            <span className="meta-divider">·</span>
+            <span className="dock-garment-fit">{selectedGarment.fit}</span>
           </div>
-        )}
+        </div>
 
-        {/* State 3: Full Pop-Out Dock (Stayed on / Clicked) */}
-        {dockState === 'EXPANDED' && (
-          <div className="dock-pill expanded-dock">
-            {/* Left Section: Garment Identity */}
-            <div className="dock-identity-section">
-              <div className="identity-text">
-                <div className="dock-title-line">
-                  <span className="dock-num-tag">{selectedGarment.num}</span>
-                  <span className="dock-garment-title">{selectedGarment.name}</span>
-                </div>
-                <div className="dock-meta-row">
-                  <span className="dock-garment-price">{selectedGarment.price}</span>
-                  <span className="meta-divider">·</span>
-                  <span className="dock-garment-fit">{selectedGarment.fit}</span>
-                </div>
-              </div>
-            </div>
+        <div className="dock-swatches" role="group" aria-label="Colourway">
+          {GARMENT_DATA.map((item, idx) => (
+            <button
+              key={item.id}
+              className={`dock-swatch-btn ${idx === selectedIndex ? 'active' : ''}`}
+              onClick={() => handleSelect(idx)}
+              aria-label={item.name}
+              aria-pressed={idx === selectedIndex}
+              title={item.name}
+            >
+              <span className="swatch-chip" style={{ backgroundColor: swatchColor(item) }} />
+            </button>
+          ))}
+        </div>
 
-            {/* Center Section: Full Color Swatches */}
-            <div className="dock-palette-section">
-              <div className="dock-swatches">
-                {GARMENT_DATA.map((item, idx) => (
-                  <button
-                    key={item.id}
-                    className={`dock-swatch-btn ${idx === selectedIndex ? 'active' : ''}`}
-                    style={{ backgroundColor: `#${item.color.toString(16).padStart(6, '0')}` }}
-                    onClick={(e) => handleSwatchClick(idx, e)}
-                    title={item.name}
-                  />
-                ))}
-              </div>
-            </div>
+        <div className="dock-actions">
+          <button
+            className={`dock-action-btn ${fabricInspectMode ? 'active' : ''}`}
+            onClick={handleToggleFabricInspect}
+            aria-label="Fabric close-up"
+          >
+            <Layers size={14} />
+            <span>FABRIC</span>
+          </button>
+          <button className="dock-action-btn" onClick={handleFlip} aria-label="Flip to see the back">
+            <RotateCw size={14} />
+            <span>FLIP</span>
+          </button>
+          <button
+            className={`dock-action-btn ${garmentState !== 'HANGING' ? 'active' : ''}`}
+            onClick={handleToggleDrop}
+            aria-label={garmentState === 'HANGING' ? 'Drop garment to shelf' : 'Hang garment back on rail'}
+          >
+            {garmentState === 'HANGING' ? <ArrowDown size={14} /> : <ArrowUp size={14} />}
+            <span>{garmentState === 'HANGING' ? 'DROP' : 'HANG'}</span>
+          </button>
+          <button className="dock-action-btn" onClick={handleNudge} aria-label="Sway the garment">
+            <Wind size={14} />
+            <span>SWAY</span>
+          </button>
+          <button className="dock-action-btn" onClick={handleResetCamera} aria-label="Reset camera">
+            <Compass size={14} />
+            <span>RESET</span>
+          </button>
+        </div>
 
-            {/* Right Section: Actions */}
-            <div className="dock-action-section">
-              {/* Zoom Into Fabric */}
-              <button
-                className={`dock-action-btn ${fabricInspectMode ? 'active-zoom' : ''}`}
-                onClick={handleToggleFabricInspect}
-                title="Zoom into shirt fabric details"
-              >
-                <Layers size={11} />
-                <span>{fabricInspectMode ? 'CLOSE FABRIC' : 'FABRIC'}</span>
-              </button>
+        <button className="buy-btn dock-buy" onClick={handleAddToBag}>
+          <ShoppingBag size={15} />
+          <span>ADD TO BAG</span>
+        </button>
 
-              {/* Drop / Hang Button */}
-              <button
-                className={`dock-action-btn primary ${garmentState !== 'HANGING' ? 'fallen' : ''}`}
-                onClick={handleToggleDrop}
-                title={garmentState === 'HANGING' ? 'Drop garment to bottom shelf' : 'Hang garment back on rack'}
-              >
-                {garmentState === 'HANGING' ? (
-                  <>
-                    <ArrowDown size={12} />
-                    <span>DROP</span>
-                  </>
-                ) : (
-                  <>
-                    <ArrowUp size={12} />
-                    <span>HANG</span>
-                  </>
-                )}
-              </button>
-
-              {/* Flip Front / Back */}
-              <button
-                className="dock-action-btn"
-                onClick={handleFlip}
-                title="Rotate 180° to inspect back"
-              >
-                <RotateCw size={11} />
-                <span>FLIP</span>
-              </button>
-
-              {/* Test Sway */}
-              <button
-                className="dock-action-btn"
-                onClick={handleNudge}
-                title="Simulate wind to test cloth sway"
-              >
-                <Wind size={11} />
-                <span>SWAY</span>
-              </button>
-
-              {/* Reset Camera */}
-              <button
-                className="dock-action-btn"
-                onClick={handleResetCamera}
-                title="Reset 3D camera"
-              >
-                <Compass size={11} />
-                <span>RESET</span>
-              </button>
-            </div>
-          </div>
-        )}
+        <button
+          className="dock-more-btn"
+          onClick={() => setActionsOpen((open) => !open)}
+          aria-expanded={actionsOpen}
+          aria-label={actionsOpen ? 'Hide view controls' : 'Show view controls'}
+        >
+          {actionsOpen ? <X size={18} /> : <MoreHorizontal size={18} />}
+        </button>
       </div>
     </div>
   );

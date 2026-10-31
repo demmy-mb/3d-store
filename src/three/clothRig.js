@@ -85,43 +85,49 @@ export function createTShirtGeometry() {
   // Helper to compute vertex profile
   // v parameter goes from 0 (collar) to 1 (hem)
   // u parameter goes around the body (0 to 1)
+  const lerp = THREE.MathUtils.lerp;
+  const smooth = THREE.MathUtils.smoothstep;
+
   for (let j = 0; j <= yRes; j++) {
     const v = j / yRes;
-    const y = -0.14 - v * 0.64; // y from -0.14 to -0.78
+    const baseY = -0.125 - v * 0.68; // collar line down to hem (~0.68m long)
 
-    // Width flare at sleeves and drape
+    // Silhouette half-width: shoulder -> sleeve -> sleeve hem -> armpit -> body
     let halfWidth;
-    let halfDepth;
-
-    if (v < 0.25) {
-      // Shoulder & Sleeve zone: wide
-      const sProgress = v / 0.25;
-      halfWidth = 0.20 + (1 - sProgress) * 0.08 + sProgress * 0.18; // 0.28 at shoulders
-      halfDepth = 0.045 + Math.sin(v * Math.PI) * 0.03;
-    } else if (v < 0.45) {
-      // Transition from sleeve armpit to chest
-      const t = (v - 0.25) / 0.20;
-      halfWidth = THREE.MathUtils.lerp(0.38, 0.25, t);
-      halfDepth = 0.065 - t * 0.01;
+    if (v < 0.04) {
+      halfWidth = lerp(0.22, 0.3, v / 0.04); // shoulder seam
+    } else if (v < 0.26) {
+      halfWidth = lerp(0.3, 0.41, (v - 0.04) / 0.22); // sleeve angling outward
+    } else if (v < 0.33) {
+      halfWidth = lerp(0.41, 0.28, (v - 0.26) / 0.07); // underside of sleeve
     } else {
-      // Main torso down to hem: clean relaxed drop with slight flare at bottom
-      const t = (v - 0.45) / 0.55;
-      halfWidth = 0.25 + t * 0.025;
-      halfDepth = 0.055 + Math.sin(t * Math.PI) * 0.015;
+      halfWidth = lerp(0.28, 0.29, (v - 0.33) / 0.67); // straight boxy body
     }
+
+    // Front-to-back thickness: nearly flat at the shoulder seam, fuller below
+    const halfDepth = lerp(0.012, 0.058, smooth(v, 0, 0.3)) + Math.sin(v * Math.PI) * 0.008;
+
+    // Shoulders follow the hanger slope, fading out so the hem stays level
+    const slopeFade = 1 - smooth(v, 0.28, 0.5);
 
     for (let i = 0; i <= xRes; i++) {
       const u = i / xRes;
       const angle = u * Math.PI * 2;
 
-      // Elliptical cross section with subtle fabric folds & drapery ripple
       const cosA = Math.cos(angle);
       const sinA = Math.sin(angle);
 
-      // Micro folds: subtle organic ripples along the sides and front
-      const foldNoise = Math.sin(u * Math.PI * 8 + v * 6) * 0.006 * (v > 0.3 ? 1 : 0.4);
+      // Micro folds: subtle organic ripples along the body
+      const foldNoise = Math.sin(u * Math.PI * 8 + v * 6) * 0.005 * (v > 0.33 ? 1 : 0.3);
       const x = cosA * halfWidth + foldNoise;
-      const z = sinA * halfDepth + Math.sin(v * 8 + u * 4) * 0.004;
+      const z = sinA * halfDepth + Math.sin(v * 8 + u * 4) * 0.003;
+
+      let y = baseY - Math.abs(x) * 0.2 * slopeFade;
+      // Crew neck scoop on the front of the top rows
+      if (sinA > 0 && v < 0.12) {
+        const neck = Math.max(0, 1 - (x / 0.11) ** 2);
+        y -= 0.07 * neck * sinA * (1 - v / 0.12);
+      }
 
       positions.push(x, y, z);
       uvs.push(u, v);

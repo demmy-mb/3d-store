@@ -1,12 +1,13 @@
-/* 3D Rude Boys Circular Museum Gallery View */
+/* Rude Boys rotunda (shared tokens and header live in index.css) */
 .museum-container {
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
-  background-color: #fcfbfa; /* Pure museum white ambience */
-  color: #121316;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #fcfbfa;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
 }
 
 .museum-canvas-wrapper {
@@ -23,179 +24,18 @@
   cursor: grabbing;
 }
 
-/* Header */
-.museum-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 24px 36px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.museum-header-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  pointer-events: auto;
-}
-
-.back-portal-btn {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 8px 14px;
-  border-radius: 20px;
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #121316;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-}
-
-.back-portal-btn:hover {
-  background: #121316;
-  color: #ffffff;
-}
-
-.museum-title-block {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-
-.museum-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: 3px;
-  color: #121316;
-}
-
-.museum-subtitle {
-  font-size: 9.5px;
-  letter-spacing: 1.5px;
-  color: #7b7d85;
-  font-weight: 600;
-}
-
-.museum-header-right {
-  pointer-events: auto;
-}
-
-.museum-hall-badge {
-  font-size: 9.5px;
-  letter-spacing: 1.5px;
-  font-weight: 700;
-  color: #8c8f96;
-  text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  padding: 6px 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-/* Nav Arrows */
-.museum-nav-arrows {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 24px;
-  transform: translateY(-50%);
-  pointer-events: none;
-  z-index: 10;
-}
-
-.museum-nav-arrows .arrow-btn {
-  pointer-events: auto;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #121316;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-}
-
-.museum-nav-arrows .arrow-btn:hover {
-  background: #121316;
-  color: #fff;
-  transform: scale(1.08);
-}
-
-/* Zoom Controls */
-.museum-zoom-controls {
-  position: absolute;
-  right: 28px;
-  bottom: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 20px;
-  padding: 4px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  z-index: 15;
-}
-
-.museum-zoom-controls .zoom-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: none;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #121316;
-  transition: all 0.15s ease;
-}
-
-.museum-zoom-controls .zoom-btn:hover {
-  background: #121316;
-  color: #fff;
-}
-
-.museum-zoom-controls .zoom-divider {
-  width: 16px;
-  height: 1px;
-  background: rgba(0, 0, 0, 0.08);
-  margin: 1px 0;
-}
-
-/* Glassmorphism Artwork Detail Sheet on the LEFT:
-   Translucent, blurred glass that lets the 3D circular rotunda and art shine through! */
+/* Artwork detail panel.
+   Desktop geometry must match museumScene.js: left 32px + width 360px. */
 .artwork-left-panel {
   position: absolute;
-  left: 44px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 350px;
-  max-height: 82vh;
+  left: 32px;
+  top: 88px;
+  width: 360px;
+  max-height: calc(100dvh - 88px - 96px);
   overflow-y: auto;
-  background: rgba(14, 16, 21, 0.65);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+  background: rgba(14, 16, 21, 0.78);
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -204,18 +44,21 @@
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
   color: #ffffff;
   z-index: 25;
-  animation: slideInLeft 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slideInLeft 0.38s var(--ease-spring);
+}
+
+.artwork-left-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.artwork-left-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 3px;
 }
 
 @keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateY(-50%) translateX(-28px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-28px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 .panel-header {
@@ -223,31 +66,36 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   padding-bottom: 8px;
 }
 
 .panel-tag {
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 1.5px;
-  color: #ff4d42;
+  letter-spacing: 1.4px;
+  color: #ff6a61;
   text-transform: uppercase;
 }
 
 .panel-close-btn {
+  width: 40px;
+  height: 40px;
+  margin-right: -10px;
+  border-radius: 50%;
   background: none;
   border: none;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.15s ease;
+  transition: color 0.15s ease, background 0.15s ease;
 }
 
 .panel-close-btn:hover {
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .panel-body {
@@ -257,17 +105,17 @@
 }
 
 .artwork-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 21px;
+  font-family: var(--font-display);
+  font-size: 24px;
   font-weight: 800;
-  letter-spacing: 1.4px;
+  letter-spacing: 1.2px;
   color: #ffffff;
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
 .artwork-artist {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.72);
   font-weight: 600;
   margin-top: -6px;
 }
@@ -275,26 +123,25 @@
 .artwork-spec-row {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
 .spec-label {
-  font-size: 8.5px;
+  font-size: 12px;
   letter-spacing: 1px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
 }
 
 .spec-value {
-  font-size: 11.5px;
-  color: rgba(255, 255, 255, 0.85);
-  line-height: 1.45;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
 }
 
 .artwork-desc {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.82);
   line-height: 1.6;
 }
 
@@ -302,7 +149,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
   padding-top: 14px;
   margin-top: 4px;
 }
@@ -311,83 +158,115 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
 }
 
 .edition-tag {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .artwork-price {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 800;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.panel-button-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.panel-buy {
+  width: 100%;
+  background: #ffffff;
+  color: var(--text-primary);
+}
+
+.panel-buy:hover {
   color: #ffffff;
 }
 
 .exit-focus-btn {
   width: 100%;
-  background: #ffffff;
-  color: #121316;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 10.5px;
+  min-height: var(--tap);
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 22px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.8px;
   cursor: pointer;
-  transition: background 0.15s ease, transform 0.15s ease;
+  transition: background 0.15s ease;
 }
 
 .exit-focus-btn:hover {
-  background: #ff4d42;
-  color: #ffffff;
-  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.1);
 }
 
-/* Bottom Footer Carousel Strip */
+/* The open panel covers the left arrow on desktop; keys and the strip still work */
+@media (min-width: 820px) {
+  .museum-container:has(.artwork-left-panel) .xp-nav-arrows .arrow-btn:first-child {
+    visibility: hidden;
+  }
+}
+
+/* Bottom artwork strip */
 .museum-footer {
   position: absolute;
   bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
+  max-width: calc(100vw - 32px);
   z-index: 20;
 }
 
 .artwork-strip {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.85);
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--glass-bg);
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 20px;
-  padding: 5px 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-light);
+  border-radius: 26px;
+  padding: 4px;
+  box-shadow: var(--shadow-dock);
+}
+
+.artwork-strip::-webkit-scrollbar {
+  display: none;
 }
 
 .artwork-pill-btn {
+  flex-shrink: 0;
+  min-height: 40px;
   background: transparent;
-  border: 1px solid transparent;
-  padding: 5px 10px;
-  border-radius: 14px;
-  font-size: 10px;
+  border: none;
+  padding: 0 14px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: 600;
-  color: #585a62;
+  color: var(--text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
-  transition: all 0.15s ease;
+  gap: 8px;
   white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .artwork-pill-btn:hover {
-  background: rgba(0, 0, 0, 0.04);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .artwork-pill-btn.active {
-  background: #121316;
+  background: var(--text-primary);
   color: #ffffff;
 }
 
@@ -397,14 +276,32 @@
   border-radius: 50%;
 }
 
-/* Responsiveness */
-@media (max-width: 900px) {
+/* Narrow screens: details become a bottom sheet, art framed above it.
+   Breakpoint must match NARROW_LAYOUT_PX in museumScene.js. */
+@media (max-width: 819px) {
   .artwork-left-panel {
-    left: 20px;
-    width: 290px;
+    left: 12px;
+    right: 12px;
+    top: auto;
+    bottom: 72px;
+    width: auto;
+    max-height: 46dvh;
     padding: 18px;
+    animation: slideUp 0.38s var(--ease-spring);
   }
-  .museum-header {
-    padding: 18px 20px;
+  .artwork-title { font-size: 20px; }
+  .xp-zoom-controls { display: none; }
+  .xp-nav-arrows { top: 30%; }
+  .museum-footer {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    transform: none;
+    max-width: none;
   }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
 }

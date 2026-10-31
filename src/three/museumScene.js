@@ -122,9 +122,8 @@ export const RUDE_BOYS_ARTWORKS = [
 /**
  * Procedurally generates high-impact Dark Metal-Pop / Graffiti Canvas Artworks
  */
-export function createMetalPopArtworkTexture(index) {
+export function createMetalPopArtworkTexture(index, canvas = document.createElement('canvas')) {
   const size = 1024;
-  const canvas = document.createElement('canvas');
   canvas.width = size;
   canvas.height = size;
   const ctx = canvas.getContext('2d');
@@ -169,65 +168,65 @@ export function createMetalPopArtworkTexture(index) {
     drawBrutalistDiamond(ctx, 512, 420, 240);
 
     ctx.fillStyle = '#ffffff';
-    ctx.font = '900 82px "Syne", sans-serif';
-    ctx.fillText('CHROME', 220, 520);
+    ctx.font = '800 82px "Syne", sans-serif';
+    fitText(ctx, 'CHROME', 520);
     ctx.fillStyle = art.accentColor;
-    ctx.fillText('REVOLT', 220, 600);
+    fitText(ctx, 'REVOLT', 600);
 
     ctx.font = '700 24px monospace';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-    ctx.fillText('HEAVY METAL ATELIER // ARCHIVE 01', 225, 660);
+    fitText(ctx, 'HEAVY METAL ATELIER // ARCHIVE 01', 660);
   } else if (index === 1) {
     // "ANARCHY IN GOLD"
     drawGildedCrownGraphic(ctx, 512, 360, 280, art.accentColor);
 
     ctx.fillStyle = '#ffffff';
-    ctx.font = '900 76px "Syne", sans-serif';
-    ctx.fillText('ROYAL ANARCHY', 180, 560);
+    ctx.font = '800 76px "Syne", sans-serif';
+    fitText(ctx, 'ROYAL ANARCHY', 560);
     ctx.font = '700 24px monospace';
     ctx.fillStyle = art.accentColor;
-    ctx.fillText('24K DECONSTRUCTED REGALIA', 185, 620);
+    fitText(ctx, '24K DECONSTRUCTED REGALIA', 620);
   } else if (index === 2) {
     // "HEAVY METAL SAINTS"
     drawBrutalistCrossGraphic(ctx, 512, 400, 320, art.accentColor);
     ctx.fillStyle = '#ffffff';
-    ctx.font = '900 84px "Syne", sans-serif';
-    ctx.fillText('SAINTS', 320, 680);
+    ctx.font = '800 84px "Syne", sans-serif';
+    fitText(ctx, 'SAINTS', 680);
   } else if (index === 3) {
     // "TITANIUM RIOT"
     drawIndustrialBars(ctx, 200, 260, 624, 280, art.accentColor);
     ctx.fillStyle = '#ffffff';
-    ctx.font = '900 78px "Syne", sans-serif';
-    ctx.fillText('TITANIUM RIOT', 180, 580);
+    ctx.font = '800 78px "Syne", sans-serif';
+    fitText(ctx, 'TITANIUM RIOT', 580);
   } else if (index === 4) {
     // "SUBWAY GHOSTS"
     drawCyberSprayCircle(ctx, 512, 420, 220, art.accentColor);
     ctx.fillStyle = '#ffffff';
-    ctx.font = '900 72px "Syne", sans-serif';
-    ctx.fillText('SUBWAY GHOSTS', 200, 540);
+    ctx.font = '800 72px "Syne", sans-serif';
+    fitText(ctx, 'SUBWAY GHOSTS', 540);
     ctx.font = '700 26px monospace';
     ctx.fillStyle = art.accentColor;
-    ctx.fillText('03:00 AM // NIGHT YARDS', 205, 600);
+    fitText(ctx, '03:00 AM // NIGHT YARDS', 600);
   } else if (index === 5) {
     // "BARBED VELVET"
     drawBarbedWireGraphic(ctx, 160, 420, 704, art.accentColor);
     ctx.fillStyle = '#ffffff';
-    ctx.font = '900 76px "Syne", sans-serif';
-    ctx.fillText('BARBED VELVET', 180, 580);
+    ctx.font = '800 76px "Syne", sans-serif';
+    fitText(ctx, 'BARBED VELVET', 580);
   } else if (index === 6) {
     // "RAW DISPATCH"
     ctx.fillStyle = '#ffffff';
-    ctx.font = '900 84px "Syne", sans-serif';
-    ctx.fillText('NO MASTERS', 180, 440);
+    ctx.font = '800 84px "Syne", sans-serif';
+    fitText(ctx, 'NO MASTERS', 440);
     ctx.fillStyle = art.accentColor;
-    ctx.fillText('RAW DISPATCH', 180, 530);
-    ctx.fillRect(180, 570, 520, 8);
+    fitText(ctx, 'RAW DISPATCH', 530);
+    ctx.fillRect(252, 570, 520, 8);
   } else {
     // "CONCRETE HALO"
     drawGildedCrownGraphic(ctx, 512, 380, 240, art.accentColor);
     ctx.fillStyle = '#ffffff';
-    ctx.font = '900 74px "Syne", sans-serif';
-    ctx.fillText('CONCRETE HALO', 190, 560);
+    ctx.font = '800 74px "Syne", sans-serif';
+    fitText(ctx, 'CONCRETE HALO', 560);
   }
 
   // Industrial spray drips & splatters
@@ -242,6 +241,60 @@ export function createMetalPopArtworkTexture(index) {
   const texture = new THREE.CanvasTexture(canvas);
   texture.generateMipmaps = true;
   texture.minFilter = THREE.LinearMipmapLinearFilter;
+  return texture;
+}
+
+/**
+ * Draws a line of text centred on the canvas, shrinking the current font
+ * until it fits inside the inner frame so titles never run off the edge.
+ */
+function fitText(ctx, text, y, maxWidth = 720) {
+  const match = ctx.font.match(/(\d+)px/);
+  let size = match ? parseInt(match[1], 10) : 72;
+  while (ctx.measureText(text).width > maxWidth && size > 12) {
+    size -= 2;
+    ctx.font = ctx.font.replace(/\d+px/, `${size}px`);
+  }
+  ctx.save();
+  ctx.textAlign = 'center';
+  ctx.fillText(text, 512, y);
+  ctx.restore();
+}
+
+/**
+ * Small museum wall label: title, artist line and edition on a card.
+ */
+export function createWallLabelTexture(index) {
+  const art = RUDE_BOYS_ARTWORKS[index];
+  const w = 512;
+  const h = 200;
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = '#f4f2ec';
+  ctx.fillRect(0, 0, w, h);
+
+  ctx.fillStyle = '#121316';
+  ctx.font = '800 34px "Syne", sans-serif';
+  let size = 34;
+  while (ctx.measureText(art.title).width > w - 64 && size > 14) {
+    size -= 2;
+    ctx.font = `800 ${size}px "Syne", sans-serif`;
+  }
+  ctx.fillText(art.title, 32, 70);
+
+  ctx.font = '600 22px "Plus Jakarta Sans", sans-serif';
+  ctx.fillStyle = '#4a4d55';
+  ctx.fillText(`${art.artist} · ${art.year}`, 32, 112);
+
+  ctx.font = '700 20px "Plus Jakarta Sans", sans-serif';
+  ctx.fillStyle = '#c1322a';
+  ctx.fillText(`${art.subtitle}  ·  ${art.price}`, 32, 156);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
   return texture;
 }
 
@@ -359,8 +412,13 @@ function drawFineSprayDrips(ctx, startX, startY, count, color) {
 const ART_WIDTH = 2.3;
 const ART_HEIGHT = 1.75;
 // Screen layout (px) - must match RudeBoysMuseum.css:
-// panel left 44px + width 350px + 40px breathing room
-const PANEL_RIGHT_EDGE_PX = 44 + 350 + 40;
+// panel left 32px + width 360px + 40px breathing room
+const PANEL_RIGHT_EDGE_PX = 32 + 360 + 40;
+// Below this width the details become a bottom sheet (46% of height + strip)
+const NARROW_LAYOUT_PX = 820;
+const SHEET_HEIGHT_RATIO = 0.46;
+const SHEET_BOTTOM_PX = 72;
+const HEADER_PX = 72;
 // Space kept clear on the right for the zoom buttons
 const RIGHT_UI_MARGIN_PX = 90;
 
@@ -383,6 +441,8 @@ export class RudeBoysMuseumExperience {
     this.cameraAnim = null;
     this.viewShift = 0; // current sideways image shift (px)
     this.targetViewShift = 0; // where the shift is easing toward (px)
+    this.viewShiftY = 0; // current vertical image shift (px, positive = up)
+    this.targetViewShiftY = 0;
 
     // Default overview looking across the circular rotunda
     this.defaultCameraPos = new THREE.Vector3(0, 1.8, 4.8);
@@ -594,16 +654,31 @@ export class RudeBoysMuseumExperience {
       canvasMesh.userData = { artworkIndex: idx };
       artGroup.add(canvasMesh);
 
-      // 3. Subtle Museum Wall Plaque beneath canvas
-      const plaqueGeo = new THREE.PlaneGeometry(0.36, 0.14);
+      // 3. Museum wall label beneath the canvas (title, artist, price)
+      const labelTexture = createWallLabelTexture(idx);
+      const plaqueGeo = new THREE.PlaneGeometry(0.64, 0.25);
       const plaqueMat = new THREE.MeshStandardMaterial({
-        color: 0x141518,
-        roughness: 0.3,
-        metalness: 0.8,
+        map: labelTexture,
+        roughness: 0.85,
+        metalness: 0.0,
       });
       const plaque = new THREE.Mesh(plaqueGeo, plaqueMat);
-      plaque.position.set(0, -canvasHeight / 2 - 0.2, 0.05);
+      plaque.position.set(canvasWidth / 2 - 0.32, -canvasHeight / 2 - 0.26, 0.02);
       artGroup.add(plaque);
+
+      // Web fonts may not be ready on first paint: redraw once they are
+      if (document.fonts) {
+        Promise.all([
+          document.fonts.load('800 72px "Syne"'),
+          document.fonts.load('600 22px "Plus Jakarta Sans"'),
+        ]).then(() => {
+          createMetalPopArtworkTexture(idx, texture.image);
+          texture.needsUpdate = true;
+          plaqueMat.map = createWallLabelTexture(idx);
+          plaqueMat.needsUpdate = true;
+          labelTexture.dispose();
+        });
+      }
 
       // 4. Dedicated Spotlights from the circular ceiling track
       const spotLight = new THREE.SpotLight(0xfff5e4, 2.8);
@@ -691,7 +766,8 @@ export class RudeBoysMuseumExperience {
     // Pick a camera distance so the whole canvas fits inside that free space
     const t = Math.tan(THREE.MathUtils.degToRad(this.camera.fov / 2));
     const H = this.container.clientHeight;
-    const distForHeight = (ART_HEIGHT * 1.0) / (2 * t * 0.62); // art uses ~62% of screen height
+    // art uses ~62% of the free height (whole screen, or the area above the sheet)
+    const distForHeight = (ART_HEIGHT * H) / (2 * t * 0.62 * layout.availHeight);
     const distForWidth = (ART_WIDTH * H) / (2 * t * 0.86 * layout.availWidth); // ~86% of free width
     const viewDist = THREE.MathUtils.clamp(Math.max(distForHeight, distForWidth), 2.2, 7.0);
 
@@ -702,6 +778,7 @@ export class RudeBoysMuseumExperience {
     const cameraPos = art.pos.clone().addScaledVector(normal, viewDist);
 
     this.targetViewShift = layout.shiftPx;
+    this.targetViewShiftY = layout.shiftYPx;
     this.animateCameraTo(cameraPos, lookTarget, 700);
 
     if (this.onSelectArtwork) {
@@ -716,16 +793,26 @@ export class RudeBoysMuseumExperience {
    */
   getFocusLayout() {
     const W = this.container.clientWidth;
-    // Narrow screens: panel covers most of the view, so just center the art
-    if (W < 820) {
-      return { shiftPx: 0, availWidth: W * 0.9 };
+    const H = this.container.clientHeight;
+    // Narrow screens: details sit in a bottom sheet, so frame the art above it
+    if (W < NARROW_LAYOUT_PX) {
+      const top = HEADER_PX;
+      const bottom = H - SHEET_BOTTOM_PX - H * SHEET_HEIGHT_RATIO;
+      return {
+        shiftPx: 0,
+        shiftYPx: H / 2 - (top + bottom) / 2,
+        availWidth: W * 0.8,
+        availHeight: Math.max(bottom - top, H * 0.25),
+      };
     }
     const leftEdge = PANEL_RIGHT_EDGE_PX; // right edge of the glass panel + breathing room
     const rightEdge = W - RIGHT_UI_MARGIN_PX; // leave space for the zoom buttons
     const regionCenter = (leftEdge + rightEdge) / 2;
     return {
       shiftPx: regionCenter - W / 2,
+      shiftYPx: 0,
       availWidth: rightEdge - leftEdge,
+      availHeight: H,
     };
   }
 
@@ -737,18 +824,19 @@ export class RudeBoysMuseumExperience {
   updateViewOffset() {
     const W = this.container.clientWidth;
     const H = this.container.clientHeight;
-    if (Math.abs(this.viewShift) < 0.5) {
+    if (Math.abs(this.viewShift) < 0.5 && Math.abs(this.viewShiftY) < 0.5) {
       if (this.camera.view && this.camera.view.enabled) {
         this.camera.clearViewOffset();
       }
       return;
     }
-    this.camera.setViewOffset(W, H, -this.viewShift, 0, W, H);
+    this.camera.setViewOffset(W, H, -this.viewShift, this.viewShiftY, W, H);
   }
 
   exitFocus() {
     this.selectedArtworkIndex = null;
     this.targetViewShift = 0;
+    this.targetViewShiftY = 0;
     this.animateCameraTo(this.defaultCameraPos, this.defaultLookTarget, 600);
     if (this.onSelectArtwork) {
       this.onSelectArtwork(null);
@@ -790,8 +878,11 @@ export class RudeBoysMuseumExperience {
     this.renderer.setSize(width, height);
     // Re-measure the free space so the focused art stays on the right after resizing
     if (this.selectedArtworkIndex !== null) {
-      this.targetViewShift = this.getFocusLayout().shiftPx;
+      const layout = this.getFocusLayout();
+      this.targetViewShift = layout.shiftPx;
       this.viewShift = this.targetViewShift;
+      this.targetViewShiftY = layout.shiftYPx;
+      this.viewShiftY = this.targetViewShiftY;
     }
     this.updateViewOffset();
     this.camera.updateProjectionMatrix();
@@ -816,11 +907,15 @@ export class RudeBoysMuseumExperience {
     }
 
     // Smoothly ease the sideways image shift toward its target
-    if (Math.abs(this.targetViewShift - this.viewShift) > 0.5) {
-      this.viewShift += (this.targetViewShift - this.viewShift) * 0.12;
+    const dx = this.targetViewShift - this.viewShift;
+    const dy = this.targetViewShiftY - this.viewShiftY;
+    if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
+      this.viewShift += dx * 0.12;
+      this.viewShiftY += dy * 0.12;
       this.updateViewOffset();
-    } else if (this.viewShift !== this.targetViewShift) {
+    } else if (dx !== 0 || dy !== 0) {
       this.viewShift = this.targetViewShift;
+      this.viewShiftY = this.targetViewShiftY;
       this.updateViewOffset();
     }
 

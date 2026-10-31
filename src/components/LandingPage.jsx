@@ -35,20 +35,20 @@ export default function LandingPage({ onSelectExperience }) {
           <div className="side-content">
             <div className="side-category">
               <Sparkles size={12} />
-              <span>01 / VIRTUAL SHOWROOM</span>
+              <span>01 / THE SHOWROOM</span>
             </div>
 
             <h2 className="side-title">ATELIER ÉTHOS</h2>
-            <p className="side-tagline">Minimalist Showroom & 8-Bone Dynamic Physics</p>
+            <p className="side-tagline">Heavyweight tees, hung on a live rail.</p>
 
             <p className="side-description">
-              Tailored heavyweight cotton garments rendered with real-time 8-bone spring dynamics, responsive rail sliding, and physical drop mechanics inside an infinite white cyclorama.
+              Browse six colourways of the AW26 tee. Slide the rail, flip each piece to see the back, and zoom in close enough to read the knit.
             </p>
 
             <div className="experience-pills">
-              <span className="pill">8-Bone Cloth Rig</span>
-              <span className="pill">Rail Physics</span>
-              <span className="pill">Studio Lighting</span>
+              <span className="pill">6 colourways</span>
+              <span className="pill">From $85</span>
+              <span className="pill">Fabric close-up</span>
             </div>
 
             <button
@@ -77,20 +77,20 @@ export default function LandingPage({ onSelectExperience }) {
           <div className="side-content">
             <div className="side-category rudeboys-cat">
               <Disc size={12} />
-              <span>02 / CONTEMPORARY EXHIBITION</span>
+              <span>02 / THE EXHIBITION</span>
             </div>
 
             <h2 className="side-title rudeboys-title">RUDE BOYS</h2>
-            <p className="side-tagline rudeboys-tagline">Circular Museum Rotunda & Street Art Gallery</p>
+            <p className="side-tagline rudeboys-tagline">Eight original street works in a sunlit rotunda.</p>
 
             <p className="side-description rudeboys-desc">
-              Monumental circular gallery rotunda crowned with natural ceiling skyholes. Inspect original street art canvases, liquid chrome aerosol, and curatorial archives.
+              Walk the circular gallery, step up to any canvas, and read the story behind it. Every piece is a one-of-one original.
             </p>
 
             <div className="experience-pills">
-              <span className="pill rudeboys-pill">Circular Rotunda</span>
-              <span className="pill rudeboys-pill">Ceiling Skyholes</span>
-              <span className="pill rudeboys-pill">Curatorial Archive</span>
+              <span className="pill rudeboys-pill">8 originals</span>
+              <span className="pill rudeboys-pill">1 of 1 editions</span>
+              <span className="pill rudeboys-pill">Curator notes</span>
             </div>
 
             <button
@@ -109,8 +109,8 @@ export default function LandingPage({ onSelectExperience }) {
 
       {/* Footer Info */}
       <footer className="landing-footer">
-        <span>INTERACTIVE 3D SPATIAL EXPERIENCES</span>
-        <span>HOVER TO PREVIEW · CLICK TO ENTER</span>
+        <span>INTERACTIVE 3D STORE</span>
+        <span>CHOOSE A SPACE TO ENTER</span>
       </footer>
     </div>
   );

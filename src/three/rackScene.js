@@ -391,6 +391,9 @@ export class VirtualRackExperience {
       // 8-Bone Skeleton and Skinned Mesh
       const { skeleton, bones, rootBone } = create8BoneSkeleton();
       garmentGroup.add(rootBone);
+      // Bone world matrices must be current before bind(), otherwise every
+      // bone's inverse is identity and vertices get dragged down by its offset
+      garmentGroup.updateMatrixWorld(true);
 
       const skinnedMesh = new THREE.SkinnedMesh(tShirtGeometry.clone(), fabricMat);
       skinnedMesh.castShadow = true;
