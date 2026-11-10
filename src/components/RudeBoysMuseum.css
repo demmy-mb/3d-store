@@ -1,11 +1,11 @@
-/* Rude Boys rotunda (shared tokens and header live in index.css) */
+/* RRUDE BOY rotunda (shared tokens and header live in index.css) */
 .museum-container {
   position: relative;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  background-color: #fcfbfa;
+  background-color: var(--rb-white);
   color: var(--text-primary);
   font-family: var(--font-sans);
 }
@@ -107,7 +107,7 @@
 .artwork-title {
   font-family: var(--font-display);
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 400;
   letter-spacing: 1.2px;
   color: #ffffff;
   line-height: 1.15;
@@ -208,10 +208,10 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* The open panel covers the left arrow on desktop; keys and the strip still work */
+/* The open panel would cover the left arrow on desktop, so it sits beside the panel */
 @media (min-width: 820px) {
-  .museum-container:has(.artwork-left-panel) .xp-nav-arrows .arrow-btn:first-child {
-    visibility: hidden;
+  .museum-container:has(.artwork-left-panel) .xp-nav-arrows {
+    padding-left: 408px; /* panel: left 32px + width 360px + 16px gap */
   }
 }
 
@@ -304,4 +304,31 @@
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(28px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Sold and work-in-progress states */
+.sold-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0 20px;
+  border: 2px solid var(--rb-red);
+  color: #ff6a61;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.wip-note {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.art-flag {
+  margin-left: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--rb-red);
 }

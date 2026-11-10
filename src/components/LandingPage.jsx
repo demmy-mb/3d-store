@@ -8,24 +8,24 @@ export default function LandingPage({ onSelectExperience }) {
 
   return (
     <div className={`landing-container hover-${hoveredSide}`}>
-      {/* Dynamic Background Atmosphere */}
-      <div className="backdrop-layer">
-        <div className="backdrop-atelier" />
-        <div className="backdrop-rudeboys" />
-      </div>
+      {/* Roughens the wordmark's edges, like a dry marker */}
+      <svg className="rough-defs" aria-hidden="true">
+        <filter id="rough-edge">
+          <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" />
+          <feDisplacementMap in="SourceGraphic" scale="5" />
+        </filter>
+      </svg>
 
-      {/* Top Header */}
-      <header className="landing-top-bar">
-        <div className="portal-brand">
-          <span className="brand-dot" />
-          <span className="portal-name">ÉTHOS × RUDE BOYS</span>
-        </div>
-        <span className="portal-season">AUTUMN / WINTER 2026 ARCHIVE</span>
+      <header className="landing-hero">
+        <h1 className="brand-wordmark" aria-label="RRUDE BOY">
+          <span className="wordmark-r">R</span>RUDE BOY
+        </h1>
+        <p className="brand-line">Raw ideas turned into unapologetic art, objects, and experiences.</p>
       </header>
 
       {/* Split Interactive Screen */}
       <main className="split-wrapper">
-        {/* Left Side: Atelier Éthos */}
+        {/* Left Side: The Clothes */}
         <section
           className={`split-side side-atelier ${hoveredSide === 'atelier' ? 'active-hover' : ''}`}
           onMouseEnter={() => setHoveredSide('atelier')}
@@ -38,7 +38,7 @@ export default function LandingPage({ onSelectExperience }) {
               <span>01 / THE SHOWROOM</span>
             </div>
 
-            <h2 className="side-title">ATELIER ÉTHOS</h2>
+            <h2 className="side-title">THE CLOTHES</h2>
             <p className="side-tagline">Heavyweight tees, hung on a live rail.</p>
 
             <p className="side-description">
@@ -64,10 +64,7 @@ export default function LandingPage({ onSelectExperience }) {
           </div>
         </section>
 
-        {/* Center Divider Seam */}
-        <div className="split-divider" />
-
-        {/* Right Side: Rude Boys Museum */}
+        {/* Right Side: The Work */}
         <section
           className={`split-side side-rudeboys ${hoveredSide === 'rudeboys' ? 'active-hover' : ''}`}
           onMouseEnter={() => setHoveredSide('rudeboys')}
@@ -80,8 +77,8 @@ export default function LandingPage({ onSelectExperience }) {
               <span>02 / THE EXHIBITION</span>
             </div>
 
-            <h2 className="side-title rudeboys-title">RUDE BOYS</h2>
-            <p className="side-tagline rudeboys-tagline">Eight original street works in a sunlit rotunda.</p>
+            <h2 className="side-title rudeboys-title">THE WORK</h2>
+            <p className="side-tagline rudeboys-tagline">Eight one-of-one pieces in a sunlit rotunda.</p>
 
             <p className="side-description rudeboys-desc">
               Walk the circular gallery, step up to any canvas, and read the story behind it. Every piece is a one-of-one original.
@@ -106,12 +103,6 @@ export default function LandingPage({ onSelectExperience }) {
           </div>
         </section>
       </main>
-
-      {/* Footer Info */}
-      <footer className="landing-footer">
-        <span>INTERACTIVE 3D STORE</span>
-        <span>CHOOSE A SPACE TO ENTER</span>
-      </footer>
     </div>
   );
 }

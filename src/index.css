@@ -1,15 +1,19 @@
 /* Global tokens, reset, and UI shared by both experiences */
 :root {
-  --bg-studio: #fcfbfa;
-  --text-primary: #121316;
+  --rb-black: #0a0a0a;
+  --rb-red: #d90a0a;
+  --rb-white: #ffffff;
+  --rb-silver: #b4b6ba;
+  --bg-studio: var(--rb-white);
+  --text-primary: var(--rb-black);
   --text-secondary: #4a4d55;
   --text-muted: #6b6e76;
   --border-light: rgba(0, 0, 0, 0.08);
   --glass-bg: rgba(255, 255, 255, 0.9);
   --shadow-dock: 0 10px 30px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.03);
-  --accent-red: #e8372c;
+  --accent-red: var(--rb-red);
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: 'Syne', sans-serif;
+  --font-display: 'Anton', 'Impact', sans-serif;
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --tap: 44px;
 }
@@ -77,7 +81,7 @@ button {
   flex-shrink: 0;
   height: 40px;
   padding: 0 16px;
-  border-radius: 20px;
+  border-radius: 2px;
   background: var(--glass-bg);
   backdrop-filter: blur(14px);
   border: 1px solid var(--border-light);
@@ -108,9 +112,9 @@ button {
 
 .xp-title {
   font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: 3px;
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: 1px;
   white-space: nowrap;
   color: var(--text-primary);
 }
@@ -132,14 +136,14 @@ button {
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   padding: 8px 14px;
-  border-radius: 20px;
+  border-radius: 2px;
   border: 1px solid var(--border-light);
 }
 
 .bag-pill {
   height: 40px;
   padding: 0 16px;
-  border-radius: 20px;
+  border-radius: 2px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -149,6 +153,12 @@ button {
   font-weight: 700;
   letter-spacing: 0.8px;
   white-space: nowrap;
+  border: none;
+  cursor: pointer;
+}
+
+.bag-pill:disabled {
+  cursor: default;
 }
 
 .bag-count {
@@ -246,7 +256,7 @@ button {
 .buy-btn {
   min-height: var(--tap);
   padding: 0 20px;
-  border-radius: 22px;
+  border-radius: 2px;
   border: none;
   background: var(--text-primary);
   color: #fff;
@@ -275,7 +285,7 @@ button {
   transform: translateX(-50%);
   z-index: 60;
   padding: 12px 18px;
-  border-radius: 22px;
+  border-radius: 2px;
   background: var(--text-primary);
   color: #fff;
   font-size: 13px;

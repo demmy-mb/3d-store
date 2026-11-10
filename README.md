@@ -1,6 +1,6 @@
-# 3D Store & Art Experience
+# RRUDE BOY
 
-An interactive 3D web experience combining minimalist digital fashion showroom curation and a circular architectural graffiti museum rotunda.
+RRUDE BOY turns raw ideas into unapologetic art, objects, and experiences. This is its interactive 3D store: a clothing showroom and a circular gallery of one-of-one works.
 
 Built with **React**, **Vite**, **Three.js**, and modern shader/physics math.
 
@@ -8,20 +8,20 @@ Built with **React**, **Vite**, **Three.js**, and modern shader/physics math.
 
 ## 🌟 Experiences
 
-### 1. Atelier Éthos (Showroom)
+### 1. The Clothes (Showroom)
 - **Dynamic 8-Bone Cloth Rig**: Procedural skeletal hierarchy with spring-damping physics, rack sliding inertia, and realistic hang drape.
 - **Interactive Sliding Rail**: Scandinavian minimalist steel clothing rail with 6 curated colorways.
 - **Fabric Detail Mode**: Smooth camera transition to inspect micro-knit woven cotton textures.
 - **Hover Micro-Dock**: Adaptive UI dock for color switching and garment inspection.
 
-### 2. Rude Boys (Museum Gallery)
+### 2. The Work (Museum Gallery)
 - **Circular Rotunda Architecture**: Smooth 128-segment circular gallery with bright museum-white walls and polished terrazzo floor.
 - **Natural Skylights (Skyholes)**: Central architectural Oculus casting natural sunlight shafts and dynamic floor sun pools, plus satellite ceiling skyholes.
 - **Brutalist Metal-Pop Canvases**: 8 radial street graffiti artworks created with procedural canvas textures and dedicated spotlighting.
 - **Split Artwork Inspector**: Seamless viewport-offset camera math that frames clicked artwork on the right third of the display while an editorial glassmorphism catalog slides in on the left.
 
 ### 3. Portal Landing Page
-- Dual-split aesthetic selection screen with smooth interactive previews and editorial typography.
+- RRUDE BOY wordmark over a white and red split that leads into each space.
 
 ---
 
@@ -29,7 +29,7 @@ Built with **React**, **Vite**, **Three.js**, and modern shader/physics math.
 - **Framework**: React 19 + Vite
 - **3D Engine**: Three.js (r187)
 - **Physics**: Procedural Verlet/Euler spring-mass cloth simulation
-- **Styling**: Modern CSS with glassmorphism, responsive viewports, and custom typography (`Syne`, `Plus Jakarta Sans`)
+- **Styling**: Modern CSS with glassmorphism, responsive viewports, and custom typography (`Anton`, `Syne`, `Plus Jakarta Sans`)
 - **Icons**: Lucide React
 
 ---

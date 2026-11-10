@@ -1,137 +1,96 @@
-/* Professional Luxury Split Portal */
+/* RRUDE BOY portal: wordmark on black, then two loud doors */
 .landing-container {
   position: relative;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  background-color: #0c0d10;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--rb-black);
+  font-family: var(--font-sans);
   user-select: none;
 }
 
-/* Dynamic Background Atmosphere */
-.backdrop-layer {
+.rough-defs {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
+  width: 0;
+  height: 0;
 }
 
-.backdrop-atelier {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  background: radial-gradient(circle at 35% 45%, #ffffff 0%, #f7f6f2 60%, #ece8de 100%);
-  transition: width 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
-}
-
-.backdrop-rudeboys {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 50%;
-  height: 100%;
-  background: radial-gradient(circle at 65% 50%, #16181f 0%, #0d0e12 60%, #060709 100%);
-  transition: width 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
-}
-
-.hover-atelier .backdrop-atelier { width: 60%; }
-.hover-atelier .backdrop-rudeboys { width: 40%; }
-
-.hover-rudeboys .backdrop-atelier { width: 40%; }
-.hover-rudeboys .backdrop-rudeboys { width: 60%; }
-
-/* Header */
-.landing-top-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 32px 56px;
+/* Wordmark */
+.landing-hero {
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  z-index: 10;
-  pointer-events: none;
+  align-items: flex-end;
+  gap: 40px;
+  padding: 20px 56px 24px;
+  color: var(--rb-white);
 }
 
-.portal-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.brand-wordmark {
+  font-family: var(--font-display);
+  font-size: min(15vw, 27vh);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  filter: url(#rough-edge);
 }
 
-.brand-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: #121316;
+.wordmark-r {
+  color: var(--rb-red);
 }
 
-.portal-name {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  letter-spacing: 2.5px;
-  font-size: 13px;
-  color: #121316;
-}
-
-.portal-season {
-  font-size: 12px;
-  letter-spacing: 2px;
+.brand-line {
+  max-width: 260px;
+  padding-bottom: 12px;
+  font-size: 15px;
   font-weight: 600;
-  color: #a3a6ae;
+  line-height: 1.5;
+  color: var(--rb-silver);
 }
 
 /* Split Screen Layout */
 .split-wrapper {
   position: relative;
-  width: 100%;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   display: flex;
-  z-index: 5;
 }
 
 .split-side {
   position: relative;
   flex: 1;
-  height: 100%;
+  min-width: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 60px 84px;
+  padding: 32px 56px;
   cursor: pointer;
-  transition: flex 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  transition: flex 0.65s var(--ease-spring);
 }
 
-.hover-atelier .side-atelier { flex: 1.5; }
-.hover-atelier .side-rudeboys { flex: 1; opacity: 0.6; }
-
-.hover-rudeboys .side-rudeboys { flex: 1.5; }
-.hover-rudeboys .side-atelier { flex: 1; opacity: 0.6; }
+.hover-atelier .side-atelier,
+.hover-rudeboys .side-rudeboys { flex: 1.4; }
 
 /* Content Blocks */
 .side-content {
   max-width: 460px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  gap: 12px;
+  transition: transform 0.4s var(--ease-spring);
 }
 
 .split-side:hover .side-content {
   transform: translateY(-4px);
 }
 
-/* Left Side Colors & Styles */
+/* Left Side: white */
 .side-atelier {
-  color: #121316;
+  background: var(--rb-white);
+  color: var(--rb-black);
 }
 
 .side-category {
@@ -141,74 +100,65 @@
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.6px;
-  color: #5f626b;
+  color: var(--rb-red);
   text-transform: uppercase;
 }
 
 .side-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 44px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 400;
+  letter-spacing: 1px;
   line-height: 1.05;
-  color: #121316;
+  white-space: nowrap;
+  color: var(--rb-black);
 }
 
 .side-tagline {
   font-size: 15px;
-  font-weight: 600;
-  color: #3b3e46;
+  font-weight: 700;
+  color: var(--rb-black);
   letter-spacing: 0.2px;
 }
 
 .side-description {
   font-size: 14px;
-  line-height: 1.65;
-  color: #50535c;
+  line-height: 1.6;
+  color: #3d3d3d;
 }
 
 .experience-pills {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 6px 0 10px 0;
+  margin: 4px 0 8px;
 }
 
 .pill {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.3px;
-  padding: 6px 12px;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.05);
-  color: #3b3d45;
+  padding: 5px 10px;
+  border: 1.5px solid var(--rb-black);
+  color: var(--rb-black);
 }
 
-/* Right Side Colors & Styles */
+/* Right Side: red */
 .side-rudeboys {
-  color: #ffffff;
+  background: var(--rb-red);
+  color: var(--rb-white);
 }
 
-.rudeboys-cat {
-  color: #ff3b30;
-}
-
-.rudeboys-title {
-  color: #ffffff;
-}
-
-.rudeboys-tagline {
-  color: #c4c7d2;
-}
-
+.rudeboys-cat,
+.rudeboys-title,
+.rudeboys-tagline,
 .rudeboys-desc {
-  color: #a6abb8;
+  color: var(--rb-white);
 }
 
 .rudeboys-pill {
-  background: rgba(255, 255, 255, 0.08);
-  color: #e2e4ed;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-color: var(--rb-white);
+  color: var(--rb-white);
 }
 
 /* Enter Buttons */
@@ -218,96 +168,60 @@
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  padding: 12px 26px;
-  border-radius: 26px;
+  padding: 12px 24px;
+  border-radius: 2px;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.2px;
   cursor: pointer;
   border: none;
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
 
 .portal-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
 }
 
 .atelier-btn {
-  background: #121316;
-  color: #ffffff;
+  background: var(--rb-black);
+  color: var(--rb-white);
 }
 
 .atelier-btn:hover {
-  background: #2b2d35;
+  background: var(--rb-red);
 }
 
 .rudeboys-btn {
-  background: #ffffff;
-  color: #0c0d10;
+  background: var(--rb-black);
+  color: var(--rb-white);
 }
 
 .rudeboys-btn:hover {
-  background: #ff3b30;
-  color: #ffffff;
+  background: var(--rb-white);
+  color: var(--rb-black);
 }
 
-/* Center Divider Seam */
-.split-divider {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 1px;
-  background: rgba(0, 0, 0, 0.08);
-  z-index: 6;
-  pointer-events: none;
-  transition: left 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+.side-rudeboys :focus-visible {
+  outline-color: var(--rb-white);
 }
 
-.hover-atelier .split-divider { left: 60%; }
-.hover-rudeboys .split-divider { left: 40%; }
-
-/* Footer */
-.landing-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 28px 56px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
-  letter-spacing: 1.6px;
-  color: #6b6e76;
-  font-weight: 600;
-  z-index: 10;
-  pointer-events: none;
-}
-
-/* Responsiveness: stacked halves that both fit one phone screen */
+/* Responsiveness: wordmark and two stacked doors fit one phone screen */
 @media (max-width: 900px) {
+  .landing-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 16px 20px;
+  }
+  .brand-wordmark { font-size: min(21.5vw, 20vh); }
+  .brand-line { max-width: none; padding-bottom: 0; font-size: 13px; }
   .split-wrapper { flex-direction: column; }
   .split-side,
-  .hover-atelier .split-side,
-  .hover-rudeboys .split-side { flex: 1; opacity: 1; }
-  .side-atelier { padding: 76px 24px 28px; }
-  .side-rudeboys { padding: 28px 24px 40px; }
-  .side-content { width: 100%; gap: 10px; }
+  .hover-atelier .side-atelier,
+  .hover-rudeboys .side-rudeboys { flex: 1; padding: 16px 20px; }
+  .side-content { width: 100%; gap: 8px; }
   .split-side:hover .side-content { transform: none; }
-  .backdrop-atelier,
-  .hover-atelier .backdrop-atelier,
-  .hover-rudeboys .backdrop-atelier { top: 0; width: 100%; height: 50%; }
-  .backdrop-rudeboys,
-  .hover-atelier .backdrop-rudeboys,
-  .hover-rudeboys .backdrop-rudeboys { top: auto; bottom: 0; width: 100%; height: 50%; }
-  .split-divider { display: none; }
-  .side-title { font-size: 34px; }
+  .side-title { font-size: 38px; }
   .side-description,
-  .experience-pills,
-  .landing-footer,
-  .portal-season { display: none; }
-  .landing-top-bar { padding: 22px 24px; }
+  .experience-pills { display: none; }
 }

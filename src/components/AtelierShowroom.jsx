@@ -149,8 +149,8 @@ export default function AtelierShowroom({ onReturnToPortal, bagCount, onAddToBag
       <div className="canvas-wrapper" ref={containerRef} />
 
       <ExperienceHeader
-        title="ATELIER ÉTHOS"
-        subtitle="AW26 HEAVYWEIGHT TEES"
+        title="RRUDE BOY"
+        subtitle="THE CLOTHES · AW26 TEES"
         bagCount={bagCount}
         onBack={onReturnToPortal}
       />
