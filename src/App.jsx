@@ -1,19 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import LandingPage from './components/LandingPage';
-import AtelierShowroom from './components/AtelierShowroom';
 import RudeBoysMuseum from './components/RudeBoysMuseum';
+import { createCheckoutUrl, shopifyEnabled } from './shop/shopify';
 
 export default function App() {
-  // 'PORTAL' | 'ATELIER' | 'RUDEBOYS'
-  const [currentView, setCurrentView] = useState('PORTAL');
+  // The museum is the whole site. LandingPage and AtelierShowroom stay in
+  // src/components but are deliberately not linked from anywhere.
 
-  // Front-end bag shared by both experiences (no checkout wired yet)
+  // Bag of one-of-one pieces; checkout happens on Shopify
   const [bag, setBag] = useState([]);
   const [toast, setToast] = useState(null);
 
   const handleAddToBag = (item) => {
+    if (bag.some((b) => b.name === item.name)) {
+      setToast(`${item.name} is already in your bag`);
+      return;
+    }
     setBag((prev) => [...prev, item]);
     setToast(`${item.name} added to bag · ${item.price}`);
+  };
+
+  const handleCheckout = async () => {
+    const variantIds = bag.map((b) => b.variantId).filter(Boolean);
+    if (!bag.length) {
+      setToast('Your bag is empty');
+      return;
+    }
+    if (!shopifyEnabled || !variantIds.length) {
+      setToast('Checkout opens once the Shopify store is connected');
+      return;
+    }
+    try {
+      window.location.href = await createCheckoutUrl(variantIds);
+    } catch {
+      setToast('Checkout could not start. Please try again.');
+    }
   };
 
   useEffect(() => {
@@ -24,25 +44,7 @@ export default function App() {
 
   return (
     <>
-      {currentView === 'PORTAL' && (
-        <LandingPage onSelectExperience={(exp) => setCurrentView(exp)} />
-      )}
-
-      {currentView === 'ATELIER' && (
-        <AtelierShowroom
-          onReturnToPortal={() => setCurrentView('PORTAL')}
-          bagCount={bag.length}
-          onAddToBag={handleAddToBag}
-        />
-      )}
-
-      {currentView === 'RUDEBOYS' && (
-        <RudeBoysMuseum
-          onReturnToPortal={() => setCurrentView('PORTAL')}
-          bagCount={bag.length}
-          onAddToBag={handleAddToBag}
-        />
-      )}
+      <RudeBoysMuseum bagCount={bag.length} onAddToBag={handleAddToBag} onCheckout={handleCheckout} />
 
       {toast && (
         <div className="bag-toast" role="status">

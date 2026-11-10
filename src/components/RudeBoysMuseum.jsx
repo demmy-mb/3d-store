@@ -1,40 +1,48 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  RudeBoysMuseumExperience,
-  RUDE_BOYS_ARTWORKS,
-} from '../three/museumScene';
+import { RudeBoysMuseumExperience, layoutGallery } from '../three/museumScene';
+import { loadArtworks } from '../shop/shopify';
 import { ChevronLeft, ChevronRight, Plus, Minus, X, ShoppingBag } from 'lucide-react';
 import ExperienceHeader from './ExperienceHeader';
 import useKeyboardNav from '../hooks/useKeyboardNav';
 import './RudeBoysMuseum.css';
 
-export default function RudeBoysMuseum({ onReturnToPortal, bagCount, onAddToBag }) {
+export default function RudeBoysMuseum({ bagCount, onAddToBag, onCheckout }) {
   const containerRef = useRef(null);
   const experienceRef = useRef(null);
 
   const [selectedArtwork, setSelectedArtwork] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  // Artworks in tour order, each with where it hangs
+  const [entries, setEntries] = useState([]);
+  const artworks = entries.map((e) => e.data);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    let cancelled = false;
+    loadArtworks().then((list) => {
+      if (!cancelled) setEntries(layoutGallery(list));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
-    const exp = new RudeBoysMuseumExperience(
-      containerRef.current,
-      (artworkData) => {
-        setSelectedArtwork(artworkData);
-        if (artworkData) {
-          const idx = RUDE_BOYS_ARTWORKS.findIndex((a) => a.id === artworkData.id);
-          if (idx !== -1) setSelectedIndex(idx);
-        }
+  useEffect(() => {
+    if (!containerRef.current || !entries.length) return;
+
+    const exp = new RudeBoysMuseumExperience(containerRef.current, entries, (artworkData) => {
+      setSelectedArtwork(artworkData);
+      if (artworkData) {
+        const idx = entries.findIndex((e) => e.data.id === artworkData.id);
+        if (idx !== -1) setSelectedIndex(idx);
       }
-    );
+    });
 
     experienceRef.current = exp;
 
     return () => {
       exp.destroy();
     };
-  }, []);
+  }, [entries]);
 
   // Keep the active title visible in the scrollable strip on narrow screens
   const stripRef = useRef(null);
@@ -57,13 +65,19 @@ export default function RudeBoysMuseum({ onReturnToPortal, bagCount, onAddToBag 
     }
   };
 
+  // Arrows step from the open artwork, or from the one in view when none is open
+  const getCurrentIndex = () =>
+    selectedArtwork ? selectedIndex : experienceRef.current?.getFacingArtworkIndex() ?? selectedIndex;
+
   const handlePrev = () => {
-    const nextIdx = (selectedIndex - 1 + RUDE_BOYS_ARTWORKS.length) % RUDE_BOYS_ARTWORKS.length;
+    if (!artworks.length) return;
+    const nextIdx = (getCurrentIndex() - 1 + artworks.length) % artworks.length;
     handleFocusArtwork(nextIdx);
   };
 
   const handleNext = () => {
-    const nextIdx = (selectedIndex + 1) % RUDE_BOYS_ARTWORKS.length;
+    if (!artworks.length) return;
+    const nextIdx = (getCurrentIndex() + 1) % artworks.length;
     handleFocusArtwork(nextIdx);
   };
 
@@ -93,11 +107,10 @@ export default function RudeBoysMuseum({ onReturnToPortal, bagCount, onAddToBag 
       <div className="museum-canvas-wrapper" ref={containerRef} />
 
       <ExperienceHeader
-        title="RUDE BOYS"
-        subtitle="STREET ART ROTUNDA"
-        badge="HALL 04 · EAST WING"
+        title="RRUDE BOY"
+        subtitle="THE WORK"
         bagCount={bagCount}
-        onBack={onReturnToPortal}
+        onBagClick={onCheckout}
       />
 
       {/* Previous / next artwork */}
@@ -157,13 +170,25 @@ export default function RudeBoysMuseum({ onReturnToPortal, bagCount, onAddToBag 
               </div>
 
               <div className="panel-button-row">
-                <button
-                  className="buy-btn panel-buy"
-                  onClick={() => onAddToBag({ name: selectedArtwork.title, price: selectedArtwork.price })}
-                >
-                  <ShoppingBag size={15} />
-                  <span>ADD TO BAG</span>
-                </button>
+                {selectedArtwork.status === 'available' && (
+                  <button
+                    className="buy-btn panel-buy"
+                    onClick={() =>
+                      onAddToBag({
+                        name: selectedArtwork.title,
+                        price: selectedArtwork.price,
+                        variantId: selectedArtwork.variantId,
+                      })
+                    }
+                  >
+                    <ShoppingBag size={15} />
+                    <span>ADD TO BAG</span>
+                  </button>
+                )}
+                {selectedArtwork.status === 'sold' && <span className="sold-badge">SOLD</span>}
+                {selectedArtwork.status === 'wip' && (
+                  <p className="wip-note">Still being made. Preview only, not for sale yet.</p>
+                )}
                 <button className="exit-focus-btn" onClick={handleExitFocus}>
                   ← BACK TO GALLERY
                 </button>
@@ -176,15 +201,17 @@ export default function RudeBoysMuseum({ onReturnToPortal, bagCount, onAddToBag 
       {/* Bottom Artworks Carousel Strip */}
       <footer className="museum-footer">
         <div className="artwork-strip" ref={stripRef}>
-          {RUDE_BOYS_ARTWORKS.map((art, idx) => (
+          {artworks.map((art, idx) => (
             <button
               key={art.id}
               className={`artwork-pill-btn ${idx === selectedIndex && selectedArtwork ? 'active' : ''}`}
               onClick={() => handleFocusArtwork(idx)}
               aria-pressed={idx === selectedIndex && !!selectedArtwork}
             >
-              <span className="art-dot" style={{ backgroundColor: art.colorTheme }} />
+              <span className="art-dot" style={{ backgroundColor: art.accentColor }} />
               <span className="art-name">{art.title}</span>
+              {art.status === 'sold' && <span className="art-flag">SOLD</span>}
+              {art.status === 'wip' && <span className="art-flag">WIP</span>}
             </button>
           ))}
         </div>
